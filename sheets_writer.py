@@ -6,17 +6,17 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Підключення до Google Sheets
 def connect():
+    # Authenticate with Google Sheets using service account
     scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
     creds_file = os.getenv("GOOGLE_CREDS_FILE", "credentials.json")
     creds = ServiceAccountCredentials.from_json_keyfile_name(creds_file, scope)
     client = gspread.authorize(creds)
-    sheet = client.open("GymTracker").sheet1  # Назва таблиці
+    sheet = client.open("GymTracker").sheet1
     return sheet
 
-# Запис у таблицю
 def write_to_google_sheets(city, address, people_count, timestamp):
+    # Append new row with current data
     sheet = connect()
     sheet.append_row([timestamp, city, address, people_count])
-    print(f"✅ Logged to Google Sheets: {city} — {address} — {people_count} людей")
+    print(f"✅ Google Sheets log: {city} — {address} — {people_count} людей")
