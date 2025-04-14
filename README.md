@@ -126,4 +126,3 @@ If you find a new gym not matched, just add it to `known_gyms.py`.
 ## 📜 License
 
 MIT License. Just don't DDOS the gym site please xD
-```
