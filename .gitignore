@@ -1,0 +1,16 @@
+# Virtual environment (never commit)
+Lib/
+Scripts/
+pyvenv.cfg
+__pycache__/
+
+# IDE junk
+.idea/
+
+# Sensitive/private
+.env
+credentials.json
+
+# Logs & data
+*.log
+data/
