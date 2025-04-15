@@ -1,7 +1,7 @@
 # 🏋️ Gym Tracker
 
 A fully automated gym occupancy tracker for [Total Fitness](https://totalfitness.com.ua/).  
-It logs the number of active people in all gym locations every 10 minutes and writes the data to:
+It logs the number of active people in all gym locations every 15 (or any number) minutes and writes the data to:
 
 - 📄 Local CSV file (`data/gym_data.csv`)
 - 🟢 Google Sheets (via API)
@@ -15,16 +15,17 @@ It logs the number of active people in all gym locations every 10 minutes and wr
 - ✅ Logs unknown gyms for manual review
 - ✅ Auto-login via secure credentials
 - ✅ Designed to run on [Render](https://render.com) or any cloud platform
+- ✅ Supports background logging on Windows via **Task Scheduler**
 
 ---
 
 ## 📊 Sample Output
 
-| timestamp           | city         | adress         | active_people |
-|---------------------|--------------|------------------|--------|
-| 2025-04-13 17:00:00 | Київ         | Жилянська        | 17     |
-| 2025-04-13 17:00:00 | Львів        | Стрийська        | 12     |
-| 2025-04-13 17:00:00 | Черкаси      | Смілянська       | 8      |
+| timestamp           | city         | address         | active_people |
+|---------------------|--------------|------------------|----------------|
+| 2025-04-13 17:00:00 | Київ         | Жилянська        | 17             |
+| 2025-04-13 17:00:00 | Львів        | Стрийська        | 12             |
+| 2025-04-13 17:00:00 | Черкаси      | Смілянська       | 8              |
 
 ---
 
@@ -81,16 +82,39 @@ This will:
 
 ---
 
+## 🕒 Automate with Windows Task Scheduler
+
+1. Use the provided `run_scraper.bat` or `run_silent.vbs`:
+   - `run_scraper.bat` — opens terminal and logs visibly
+   - `run_silent.vbs` — runs the `.bat` file silently in background
+
+2. In Task Scheduler:
+   - **Trigger:** every 15 minutes (or your choice)
+   - **Action:** run `run_silent.vbs`
+   - **Start in:** folder containing your `gym_scraper` project
+
+3. Logs will be saved in `data/log.txt`, errors in `failures.log`.
+
+> 💡 Perfect for fully offline, headless operation on your PC.
+
+---
+
 ## 📁 Project Structure
 
 ```
 gym-tracker/
-├── data/                  # Contains gym_data.csv
+├── data/                  # Contains gym_data.csv, logs, etc.
+│   ├── gym_data.csv
+│   ├── failures.log
+│   ├── unknown_gyms.log
+│   └── log.txt
 ├── known_gyms.py          # Predefined (address, city) pairs
 ├── scraper.py             # Selenium logic for login & parsing
 ├── sheets_writer.py       # Google Sheets writer
 ├── logger.py              # Logging orchestrator
 ├── main.py                # Entry point
+├── run_scraper.bat        # Manual runner
+├── run_silent.vbs         # Background runner
 ├── .env                   # Environment variables
 ├── requirements.txt
 └── README.md
@@ -100,10 +124,11 @@ gym-tracker/
 
 ## 📌 Version History
 
-| Version | Highlights                                     |
-|---------|------------------------------------------------|
-| `v1.0`  | Initial version for Стрийська, Львів only      |
-| `v1.1`  | 🆕 Support for all 16+ gyms, improved matching  |
+| Version | Highlights                                              |
+|---------|---------------------------------------------------------|
+| `v1.0`  | Initial version for Стрийська, Львів only               |
+| `v1.1`  | 🆕 Support for all 16+ gyms, improved city/address matching |
+| `v1.2`  | 🧾 Local automation (.bat + .vbs) and unified logging   |
 
 ---
 
@@ -112,7 +137,7 @@ gym-tracker/
 - 🐍 Python 3.11+
 - 📦 Selenium
 - 🌐 Google Sheets API (`gspread`)
-- 🗃 dotenv, csv, Render (deployment)
+- 🗃 dotenv, csv, Task Scheduler, Render
 
 ---
 
