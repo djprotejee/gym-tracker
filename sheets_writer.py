@@ -1,6 +1,5 @@
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
-from datetime import datetime
 import os
 from dotenv import load_dotenv
 
@@ -21,4 +20,3 @@ def write_to_google_sheets(city, address, people_count, timestamp):
     # Append new row with current data
     sheet = connect()
     sheet.append_row([timestamp, city, address, people_count])
-    print(f"✅ Google Sheets log: {city} — {address} — {people_count} людей")

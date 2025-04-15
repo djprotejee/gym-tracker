@@ -1,4 +1,6 @@
 import os
+import sys
+sys.stdout.reconfigure(encoding='utf-8')
 
 if not os.path.exists("data"):
     os.makedirs("data")
