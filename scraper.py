@@ -33,6 +33,8 @@ def get_gym_people_list():
     options.add_argument("--headless")  # comment out to see the browser
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
+    options.add_argument("--disable-gpu")
+    options.add_argument("--window-size=1920,1080")
 
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 
@@ -43,17 +45,17 @@ def get_gym_people_list():
         # Step 1: Login to site
         print("\n[1] Logging in...")
         driver.get("https://totalfitness-ua.perfectgym.com/ClientPortal2/#/Login")
-        time.sleep(2)
+        time.sleep(5)
 
         driver.find_element(By.NAME, "Login").send_keys(email)
         driver.find_element(By.NAME, "Password").send_keys(password)
         driver.find_element(By.ID, "confirm").click()
-        time.sleep(2)
+        time.sleep(5)
 
         # Step 2: Navigate to page with club occupancy
         print("[2] Navigating to members page...")
         driver.get("https://totalfitness-ua.perfectgym.com/ClientPortal2/#/Clubs/MembersInClubs")
-        time.sleep(2)
+        time.sleep(5)
 
         # Step 3: Parse all visible club blocks
         print("[3] Scraping clubs...")
