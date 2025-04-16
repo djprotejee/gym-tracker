@@ -46,17 +46,17 @@ def get_gym_people_list():
         # Step 1: Login to site
         print("\n[1] Logging in...")
         driver.get("https://totalfitness-ua.perfectgym.com/ClientPortal2/#/Login")
-        time.sleep(5)
+        time.sleep(2)
 
         driver.find_element(By.NAME, "Login").send_keys(email)
         driver.find_element(By.NAME, "Password").send_keys(password)
         driver.find_element(By.ID, "confirm").click()
-        time.sleep(5)
+        time.sleep(2)
 
         # Step 2: Navigate to page with club occupancy
         print("[2] Navigating to members page...")
         driver.get("https://totalfitness-ua.perfectgym.com/ClientPortal2/#/Clubs/MembersInClubs")
-        time.sleep(5)
+        time.sleep(2)
 
         driver.save_screenshot("debug.png") # DEBUG
 
