@@ -42,3 +42,13 @@ jobs:
         with:
           name: debug-screenshot
           path: debug.png
+            
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: logs
+          path: |
+            data/gym_data.csv
+            data/failures.log
+            data/unknown_gyms.log
