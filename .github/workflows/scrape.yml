@@ -8,6 +8,7 @@ on:
 jobs:
   run-logger:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
@@ -24,7 +25,8 @@ jobs:
 
       - name: Restore Google credentials
         run: |
-          echo "$GOOGLE_CREDS_BASE64" | base64 -d > credentials.json
+          echo "${{ secrets.GOOGLE_CREDS_BASE64 }}" | base64 --decode > credentials.json
+          echo "✅ credentials.json restored"
 
       - name: Run gym logger
         env:
@@ -33,20 +35,9 @@ jobs:
           GOOGLE_CREDS_FILE: credentials.json
         run: python main.py
 
-      - name: Upload screenshot
-        if: always()  # run even if script fails
+      - name: Upload screenshot if present
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: debug-screenshot
           path: debug.png
-
-      - name: Restore Google credentials
-        run: |
-          echo "${{ secrets.GOOGLE_CREDS_BASE64 }}" | base64 --decode > credentials.json
-          echo "✅ Restored credentials.json:"
-          ls -lh credentials.json
-          head credentials.json || true 
-
-      - name: DEBUG — Show start of secret
-        run: echo "${{ secrets.GOOGLE_CREDS_BASE64 }}" | head -c 50
-     
