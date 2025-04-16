@@ -6,6 +6,6 @@ def is_gym_open():
     hour = now.hour
 
     if weekday < 5:
-        return 7 <= hour < 22  # Weekdays: 7–22
+        return 7 <= hour < 24  # Weekdays: 7–22
     else:
         return 9 <= hour < 18  # Weekends: 9–18
