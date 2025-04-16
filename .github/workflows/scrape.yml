@@ -42,7 +42,16 @@ jobs:
         with:
           name: debug-screenshot
           path: debug.png
-            
+          
+      - name: Show last log lines
+        if: always()
+        run: |
+          echo "📄 data/failures.log:"
+          tail -n 10 data/failures.log || true
+      
+          echo "📄 data/unknown_gyms.log:"
+          tail -n 10 data/unknown_gyms.log || true
+          
       - name: Upload logs
         if: always()
         uses: actions/upload-artifact@v4
