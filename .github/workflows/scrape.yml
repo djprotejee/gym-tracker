@@ -44,4 +44,9 @@ jobs:
         run: |
           echo "$GOOGLE_CREDS_BASE64" | base64 -d > credentials.json
           echo "✅ Restored credentials.json:"
-          cat credentials.json   
+          cat credentials.json 
+
+      - name: Check credentials file size
+        run: |
+          echo "📁 credentials.json size:"
+          ls -lh credentials.json    
