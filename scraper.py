@@ -57,6 +57,8 @@ def get_gym_people_list():
         driver.get("https://totalfitness-ua.perfectgym.com/ClientPortal2/#/Clubs/MembersInClubs")
         time.sleep(5)
 
+        driver.save_screenshot("debug.png") # DEBUG
+
         # Step 3: Parse all visible club blocks
         print("[3] Scraping clubs...")
         clubs = driver.find_elements(By.CLASS_NAME, "club-wrapper")
