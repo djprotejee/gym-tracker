@@ -39,3 +39,7 @@ jobs:
         with:
           name: debug-screenshot
           path: debug.png
+
+      - name: Restore Google credentials
+        run: |
+          echo "$GOOGLE_CREDS_BASE64" | base64 -d > credentials.json    
