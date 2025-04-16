@@ -35,7 +35,7 @@ jobs:
 
       - name: Upload screenshot
         if: always()  # run even if script fails
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: debug-screenshot
           path: debug.png
