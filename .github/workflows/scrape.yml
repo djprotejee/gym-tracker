@@ -32,3 +32,10 @@ jobs:
           GYM_PASSWORD: ${{ secrets.GYM_PASSWORD }}
           GOOGLE_CREDS_FILE: credentials.json
         run: python main.py
+
+      - name: Upload screenshot
+        if: always()  # run even if script fails
+        uses: actions/upload-artifact@v3
+        with:
+          name: debug-screenshot
+          path: debug.png
