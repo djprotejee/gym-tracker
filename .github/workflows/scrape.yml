@@ -42,14 +42,10 @@ jobs:
 
       - name: Restore Google credentials
         run: |
-          echo "$GOOGLE_CREDS_BASE64" | base64 --decode > credentials.json
+          echo "${{ secrets.GOOGLE_CREDS_BASE64 }}" | base64 --decode > credentials.json
           echo "✅ Restored credentials.json:"
-          cat credentials.json 
-
-      - name: Check credentials file size
-        run: |
-          echo "📁 credentials.json size:"
           ls -lh credentials.json
+          head credentials.json || true 
 
       - name: DEBUG — Show start of secret
         run: echo "${{ secrets.GOOGLE_CREDS_BASE64 }}" | head -c 50
