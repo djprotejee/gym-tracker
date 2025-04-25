@@ -2,12 +2,19 @@ name: 🔁 Gym Tracker Auto-Logger
 
 on:
   schedule:
-    - cron: "*/15 * * * *"  # every 15 minutes
+    # Weekdays: 07:00–22:00 every 15 minutes
+    - cron: "*/15 7-21 * * 1-5"     # 07:00–21:45
+    - cron: "0 22 * * 1-5"          # Run exactly at 22:00
+    # Weekends: 09:00–18:00 every 15 minutes
+    - cron: "*/15 9-17 * * 6,0"     # 09:00–17:45
+    - cron: "0 18 * * 6,0"          # Run exactly at 18:00
   workflow_dispatch:
 
 jobs:
   run-logger:
     runs-on: ubuntu-latest
+    env:
+      TZ: Europe/Kyiv
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
@@ -24,7 +31,8 @@ jobs:
 
       - name: Restore Google credentials
         run: |
-          echo "$GOOGLE_CREDS_BASE64" | base64 -d > credentials.json
+          echo "${{ secrets.GOOGLE_CREDS_BASE64 }}" | base64 --decode > credentials.json
+          echo "✅ credentials.json restored"
 
       - name: Run gym logger
         env:
@@ -32,3 +40,29 @@ jobs:
           GYM_PASSWORD: ${{ secrets.GYM_PASSWORD }}
           GOOGLE_CREDS_FILE: credentials.json
         run: python main.py
+
+      - name: Upload screenshot if present
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-screenshot
+          path: debug.png
+
+      - name: Show last log lines
+        if: always()
+        run: |
+          echo "📄 data/failures.log:"
+          tail -n 10 data/failures.log || true
+      
+          echo "📄 data/unknown_gyms.log:"
+          tail -n 10 data/unknown_gyms.log || true
+
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: logs
+          path: |
+            data/gym_data.csv
+            data/failures.log
+            data/unknown_gyms.log
