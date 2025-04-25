@@ -14,8 +14,10 @@ It logs the number of active people in all gym locations every 15 (or any number
 - ✅ Smart address & city matching (even when split across UI lines)
 - ✅ Logs unknown gyms for manual review
 - ✅ Auto-login via secure credentials
-- ✅ Designed to run on [Render](https://render.com) or any cloud platform
-- ✅ Supports background logging on Windows via **Task Scheduler**
+- ✅ Supports:
+  - 💻 Local runners with Task Scheduler
+  - ☁️ GitHub Actions for 24/7 cloud scraping
+- ✅ Failsafe screenshot + logging in case of issues
 
 ---
 
@@ -23,9 +25,9 @@ It logs the number of active people in all gym locations every 15 (or any number
 
 | timestamp           | city         | address         | active_people |
 |---------------------|--------------|------------------|----------------|
-| 2025-04-13 17:00:00 | Київ         | Жилянська        | 17             |
-| 2025-04-13 17:00:00 | Львів        | Стрийська        | 12             |
-| 2025-04-13 17:00:00 | Черкаси      | Смілянська       | 8              |
+| 2025-04-13 17:00:00 | Київ         | Жилянська        | 86             |
+| 2025-04-13 17:00:00 | Львів        | Стрийська        | 62             |
+| 2025-04-13 17:00:00 | Черкаси      | Смілянська       | 39             |
 
 ---
 
@@ -74,24 +76,34 @@ This will:
 
 ---
 
-## 🔁 Automate with Render
+## ☁️ GitHub Actions (Cloud Automation)
 
-1. Deploy to [Render](https://render.com)
-2. Use [cron jobs](https://render.com/docs/cronjobs) to run `main.py` every 10 minutes
-3. Add your `.env` and `credentials.json` to the Render dashboard
+Gym Tracker can be run entirely in the cloud — no PC needed.
+
+1. Go to **Settings → Secrets and Variables → Actions**
+2. Add the following repository secrets:
+   - `GYM_EMAIL`
+   - `GYM_PASSWORD`
+   - `GOOGLE_CREDS_BASE64` — your base64-encoded `credentials.json`
+3. View/edit the schedule in `.github/workflows/scrape.yml`  
+   The scraper only runs **during gym hours**:
+   - **Weekdays:** 07:00–22:05
+   - **Weekends:** 09:00–18:05
+
+> ✅ Logs and screenshots are uploaded as GitHub Actions artifacts.
 
 ---
 
-## 🕒 Automate with Windows Task Scheduler
+## 🖥 Automate Locally (Task Scheduler on Windows)
 
-1. Use the provided `run_scraper.bat` or `run_silent.vbs`:
-   - `run_scraper.bat` — opens terminal and logs visibly
-   - `run_silent.vbs` — runs the `.bat` file silently in background
+1. Use:
+   - `run_scraper.bat` — visible runner
+   - `run_silent.vbs` — background runner
 
-2. In Task Scheduler:
-   - **Trigger:** every 15 minutes (or your choice)
-   - **Action:** run `run_silent.vbs`
-   - **Start in:** folder containing your `gym_scraper` project
+2. Create a **Task Scheduler task**:
+   - Trigger: every 15 minutes
+   - Action: run `run_silent.vbs`
+   - "Start in": full path to your project directory
 
 3. Logs will be saved in `data/log.txt`, errors in `failures.log`.
 
@@ -103,6 +115,9 @@ This will:
 
 ```
 gym-tracker/
+├── .github/
+│   └── workflows/
+│       └── scrape.yml     # GitHub Actions workflow (cloud runner)
 ├── data/                  # Contains gym_data.csv, logs, etc.
 │   ├── gym_data.csv
 │   ├── failures.log
@@ -112,6 +127,7 @@ gym-tracker/
 ├── scraper.py             # Selenium logic for login & parsing
 ├── sheets_writer.py       # Google Sheets writer
 ├── logger.py              # Logging orchestrator
+├── utils.py               # Helper: is_gym_open()
 ├── main.py                # Entry point
 ├── run_scraper.bat        # Manual runner
 ├── run_silent.vbs         # Background runner
@@ -129,15 +145,16 @@ gym-tracker/
 | `v1.0`  | Initial version for Стрийська, Львів only               |
 | `v1.1`  | 🆕 Support for all 16+ gyms, improved city/address matching |
 | `v1.2`  | 🧾 Local automation (.bat + .vbs) and unified logging   |
+| `v1.3`  | ☁️ GitHub Actions, smart scheduling and logging |
 
 ---
 
 ## 🧩 Tech Stack
 
 - 🐍 Python 3.11+
-- 📦 Selenium
+- 📦 Selenium (headless Chrome)
 - 🌐 Google Sheets API (`gspread`)
-- 🗃 dotenv, csv, Task Scheduler, Render
+- 🗃 dotenv, cron, base64 secrets
 
 ---
 
@@ -150,4 +167,4 @@ If you find a new gym not matched, just add it to `known_gyms.py`.
 
 ## 📜 License
 
-MIT License. Just don't DDOS the gym site please xD
+MIT License. Just don't DDOS the gym site please
