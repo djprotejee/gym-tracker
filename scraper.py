@@ -51,12 +51,12 @@ def get_gym_people_list():
         driver.find_element(By.NAME, "Login").send_keys(email)
         driver.find_element(By.NAME, "Password").send_keys(password)
         driver.find_element(By.ID, "confirm").click()
-        time.sleep(2)
+        time.sleep(4)
 
         # Step 2: Navigate to page with club occupancy
         print("[2] Navigating to members page...")
         driver.get("https://totalfitness-ua.perfectgym.com/ClientPortal2/#/Clubs/MembersInClubs")
-        time.sleep(2)
+        time.sleep(3)
 
         driver.save_screenshot("debug.png") # DEBUG
 
