@@ -58,7 +58,7 @@ def get_gym_people_list():
         driver.get("https://totalfitness-ua.perfectgym.com/ClientPortal2/#/Clubs/MembersInClubs")
         time.sleep(2)
 
-        driver.save_screenshot("debug.png")  # DEBUG
+        driver.save_screenshot("debug.png") # DEBUG
 
         # Step 3: Parse all visible club blocks
         print("[3] Scraping clubs...")
@@ -71,7 +71,7 @@ def get_gym_people_list():
                 raw_name = lines[0].strip()
                 name = raw_name.lstrip("0123456789. ").strip()
                 address_line = lines[1].strip()  # full address string
-                count_line = next(line for line in lines if "Зараз у клубі" in line)
+                count_line = next(line for line in lines if "Зараз у клубі" in line or "Now In Club" in line)
                 count = int(count_line.split(":")[-1].strip())
 
                 # Try to match to known gyms by (address, city) with normalized text
