@@ -146,6 +146,7 @@ gym-tracker/
 | `v1.1`  | 🆕 Support for all 16+ gyms, improved city/address matching |
 | `v1.2`  | 🧾 Local automation (.bat + .vbs) and unified logging   |
 | `v1.3`  | ☁️ GitHub Actions, smart scheduling and logging |
+| `v1.3.1`| 🔧 Patch: fallback parsing, fixed YAML schedule, debug output |
 
 ---
 
