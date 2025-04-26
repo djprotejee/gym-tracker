@@ -46,7 +46,7 @@ def get_gym_people_list():
         # Step 1: Login to site
         print("\n[1] Logging in...")
         driver.get("https://totalfitness-ua.perfectgym.com/ClientPortal2/#/Login")
-        time.sleep(2)
+        time.sleep(4)
 
         driver.find_element(By.NAME, "Login").send_keys(email)
         driver.find_element(By.NAME, "Password").send_keys(password)
